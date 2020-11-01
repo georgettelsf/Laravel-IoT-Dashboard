@@ -59,3 +59,11 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+ 
+## How to use that shit
+
+- touch database/database.sqlite
+- cp .env.example .env (setαρεις την database και το host της front end εφαρμογης)
+- composer install
+- php artisan migrate
+- php artisan serv --host='την ip του server σου' 	
