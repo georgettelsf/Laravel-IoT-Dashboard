@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Device extends Model
 {
     use HasFactory;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -19,4 +20,25 @@ class Device extends Model
         'user_id',
         'variables'
     ];
+
+    protected $casts = [
+        'variables' => 'array'
+    ];
+
+
+    public function setVariablesAttribute($variables)
+    {
+        $this->attributes['variables'] = json_encode($variables);
+    }
+
+
+    public function metrics()
+    {
+        return $this->hasMany(Metric::class);
+    }
+
+    public function latestMetrics()
+    {
+        return $this->hasMany(Metric::class)->latest()->take(15);
+    }
 }

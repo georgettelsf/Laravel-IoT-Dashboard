@@ -8,8 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class Metric extends Model
 {
     use HasFactory;
+
     protected $fillable = [
-        'variables',
+        'values',
         'device_id'
     ];
+
+    protected $casts = [
+        'values' => 'array'
+    ];
+
+    public function setValuesAttribute($values)
+    {
+        $this->attributes['values'] = json_encode($values);
+    }
 }
