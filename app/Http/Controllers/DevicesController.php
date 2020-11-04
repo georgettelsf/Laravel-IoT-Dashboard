@@ -29,4 +29,35 @@ class DevicesController extends Controller
 
         return redirect(action('DevicesController@show', ['device' => $device-> id]));
     }
+
+    public function update(Request $request, $id){
+        
+        $device = Device::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'name' => 'required|min:5',
+            'variables'=> ''
+        ]);
+
+        $device = $device->update()([
+            'name' => $validatedData['name'],
+            'variables' => $validatedData['variables']
+        ]);
+    }
+
+    /*public function get(Request $request, $id){
+        
+        $device = Device::findOrFail($id);
+
+        return 
+    }*/
+
+    public function delete(Request $request, $id){
+        
+        $device = Device::findOrFail($id);
+
+        $device->delete(); 
+
+        return response()->json([], 204);         
+    }
 }
