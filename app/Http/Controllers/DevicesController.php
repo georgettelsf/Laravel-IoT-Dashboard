@@ -7,28 +7,28 @@ use App\Http\Resources\DeviceCollection;
 use App\Http\Resources\DeviceResource;
 use App\Models\Device;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Str;
 class DevicesController extends Controller
 {
     public function index() {
         return new DeviceCollection(Device::with('latestMetrics')->where('user_id', Auth::user()->id)->paginate(20));
     }
 
-    public function store(Request $request, string $token) {
-        dd($token);
+    public function store(Request $request) {
 
         $validatedData = $request->validate([
             'name' => 'required|min:5',
-            'metrics'=> 'required|max:255'
+            'variables'=> 'required'
         ]);
         
         $device = Device::create([
             'name' => $validatedData['name'],
-            'token' => str::random(16),
-            'metrics' => $validatedData['metrics']
+            'token' => Str::random(16),
+            'user_id' => Auth::user()->id,
+            'variables' => $validatedData['variables']
         ]);
 
-        return redirect(action('DevicesController@show', ['device' => $device-> id]));
+        return new DeviceResource($device);       
     }
 
     public function update(Request $request, $id){
@@ -46,13 +46,6 @@ class DevicesController extends Controller
         ]);
     }
 
-    /*public function get(Request $request, $id){
-        
-        $device = Device::findOrFail($id);
-
-        return 
-    }*/
-
     public function delete(Request $request, $id){        
         $device = Device::findOrFail($id);
         $device->delete(); 
@@ -61,6 +54,6 @@ class DevicesController extends Controller
 
     public function get(Request $request, $device_id){
         $device = Device::findOrFail($id); 
-        return new DeviceResource($this->device);       
+        return new DeviceResource($device);       
     }
 }

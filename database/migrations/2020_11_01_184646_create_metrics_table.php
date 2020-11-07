@@ -17,7 +17,7 @@ class CreateMetricsTable extends Migration
             $table->id();
             $table->json("values");
             $table->unsignedBigInteger("device_id");
-            $table->foreign("device_id")->references('id')->on('devices');
+            $table->foreign("device_id")->references('id')->on('devices')->onDelete('cascade');
             $table->timestamps();
         });
     }
