@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Resources\DeviceCollection;
+use App\Http\Resources\DeviceResource;
 use App\Models\Device;
 use Illuminate\Support\Facades\Auth;
 
@@ -52,12 +53,14 @@ class DevicesController extends Controller
         return 
     }*/
 
-    public function delete(Request $request, $id){
-        
+    public function delete(Request $request, $id){        
         $device = Device::findOrFail($id);
-
         $device->delete(); 
+        return response()->json([], 204);        
+    }
 
-        return response()->json([], 204);         
+    public function get(Request $request, $device_id){
+        $device = Device::findOrFail($id); 
+        return new DeviceResource($this->device);       
     }
 }

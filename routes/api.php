@@ -23,3 +23,5 @@ Route::middleware(['auth:sanctum'])->group(function() {
 });
 
 Route::post('/metrics/{token}', [MetricsController::class, 'store']);
+
+// application json header

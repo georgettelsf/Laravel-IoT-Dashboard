@@ -21,4 +21,14 @@ class MetricsController extends Controller
         ]);
         return response('', 201);
     }
+
+    public function get(Request $request, $device_id){
+        $metrics = Metrics::where($device_id);
+        return new MetricCollection($this->metrics);  ;         
+    }
+
+    public function delete(Request $request, $device_id){        
+        $metrics = Metrics::where($device_id)->delete();
+        return response()->json([], 204);         
+    }
 }
