@@ -21,6 +21,10 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::get('/devices/{id}/metrics', [DevicesController::class, 'index']);
     Route::post('/devices', [DevicesController::class, 'store']);
     Route::delete('/devices/{id}', [DevicesController::class, 'delete']);
+    Route::update('/devices/{id}', [DevicesController::class, 'update']);
+    Route::get('/devices/{id}', [DevicesController::class, 'get']);
+    Route::delete('/metrics/{id}', [DevicesController::class, 'delete']);
+    Route::get('/metrics/{id}', [DevicesController::class, 'get']);
 });
 
 Route::post('/metrics/{token}', [MetricsController::class, 'store']);
