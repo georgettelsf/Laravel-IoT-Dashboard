@@ -20,6 +20,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::get('/devices', [DevicesController::class, 'index']);
     Route::get('/devices/{id}/metrics', [DevicesController::class, 'index']);
     Route::post('/devices', [DevicesController::class, 'store']);
+    Route::delete('/devices/{id}', [DevicesController::class, 'delete']);
 });
 
 Route::post('/metrics/{token}', [MetricsController::class, 'store']);
