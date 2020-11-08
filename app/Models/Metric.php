@@ -15,7 +15,8 @@ class Metric extends Model
     ];
 
     protected $casts = [
-        'values' => 'array'
+        'values' => 'array',
+        'created_at' => 'datetime'
     ];
 
     public function setValuesAttribute($values)

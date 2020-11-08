@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 class DevicesController extends Controller
 {
     public function index() {
-        return new DeviceCollection(Device::with('latestMetrics')->where('user_id', Auth::user()->id)->paginate(20));
+        return new DeviceCollection(Device::where('user_id', Auth::user()->id)->with('latestMetrics')->paginate(20));
     }
 
     public function store(Request $request) {

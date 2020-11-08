@@ -15,7 +15,8 @@ class MetricResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'values' => $this->values
+            'values' => $this->values,
+            'date' => $this->created_at->timestamp
         ];
     }
 }

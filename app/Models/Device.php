@@ -39,6 +39,6 @@ class Device extends Model
 
     public function latestMetrics()
     {
-        return $this->hasMany(Metric::class)->latest()->take(15);
+        return $this->hasMany(Metric::class)->latest();
     }
 }
