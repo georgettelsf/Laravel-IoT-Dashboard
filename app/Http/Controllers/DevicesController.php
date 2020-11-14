@@ -37,13 +37,15 @@ class DevicesController extends Controller
 
         $validatedData = $request->validate([
             'name' => 'required|min:5',
-            'variables'=> ''
+            'variables'=> 'required'
         ]);
 
-        $device = $device->update()([
+        $device->update([
             'name' => $validatedData['name'],
             'variables' => $validatedData['variables']
         ]);
+
+        return new DeviceResource($device);
     }
 
     public function delete(Request $request, $id){        
