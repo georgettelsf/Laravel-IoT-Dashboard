@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class DeviceResource extends JsonResource
+class DeviceResourceSingle extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,11 +16,10 @@ class DeviceResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user_id' => $this->user_id,
             'name' => $this->name,
             'variables' => $this->variables,
             'token' => $this->token,
-            'latest_metrics' => new MetricCollection($this->latestMetrics)
+            'metrics' => new MetricCollection($this->metrics)
         ];
     }
 }

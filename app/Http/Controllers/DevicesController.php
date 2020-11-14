@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Resources\DeviceCollection;
 use App\Http\Resources\DeviceResource;
+use App\Http\Resources\DeviceResourceSingle;
+
 use App\Models\Device;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+
 class DevicesController extends Controller
 {
     public function index() {
@@ -34,7 +37,9 @@ class DevicesController extends Controller
     public function update(Request $request, $id){
         
         $device = Device::findOrFail($id);
-
+        if ($device->user_id !== Auth::user()->id) {
+            abort(403);
+        }
         $validatedData = $request->validate([
             'name' => 'required|min:5',
             'variables'=> 'required'
@@ -50,12 +55,24 @@ class DevicesController extends Controller
 
     public function delete(Request $request, $id){        
         $device = Device::findOrFail($id);
+        if ($device->user_id != Auth::user()->id) {
+            abort(403);
+        }
         $device->delete(); 
         return response()->json([], 204);        
     }
 
-    public function get(Request $request, $device_id){
-        $device = Device::findOrFail($id); 
-        return new DeviceResource($device);       
+    public function get(Request $request, $id) {
+        $device = Device::with(['metrics' => function($query) {
+            $query->latest()->take(15);
+        }])->where('id', $id)->first(); 
+        if (!$device) {
+            abort(404);
+        }
+
+        if ($device->user_id != Auth::user()->id) {
+            abort(403);
+        }
+        return new DeviceResourceSingle($device);       
     }
 }
