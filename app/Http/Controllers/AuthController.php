@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -24,7 +25,8 @@ class AuthController extends Controller
             return response()->json([], 204);
         }
 
-        return response()->json(['error' => 'Invalid credentials']);
+        throw ValidationException::withMessages(['email' => 'Invalid credentials']);
+        // return response()->json(['email' => 'Invalid credentials'], 422);
     }
 
     public function register(Request $request){
