@@ -18,13 +18,13 @@ use App\Http\Controllers\MetricsController;
 
 Route::middleware(['auth:sanctum'])->group(function() {
     Route::get('/devices', [DevicesController::class, 'index']);
-    Route::get('/devices/{id}/metrics', [DevicesController::class, 'index']);
-    Route::post('/devices', [DevicesController::class, 'store']);
-    Route::delete('/devices/{id}', [DevicesController::class, 'delete']);
-    Route::patch('/devices/{id}', [DevicesController::class, 'update']);
     Route::get('/devices/{id}', [DevicesController::class, 'get']);
-    Route::delete('/metrics/{id}', [DevicesController::class, 'delete']);
-    Route::get('/metrics/{id}', [DevicesController::class, 'get']);
+    Route::post('/devices', [DevicesController::class, 'store']);
+    Route::patch('/devices/{id}', [DevicesController::class, 'update']);
+    Route::delete('/devices/{id}', [DevicesController::class, 'delete']);
+
+    Route::get('/metrics/{id}', [MetricsController::class, 'get']);
+    Route::delete('/metrics/{id}', [MetricsController::class, 'delete']);
 });
 
 Route::post('/metrics/{token}', [MetricsController::class, 'store']);
