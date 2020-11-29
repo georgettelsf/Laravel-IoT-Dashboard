@@ -29,4 +29,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
 
 Route::post('/metrics/{token}', [MetricsController::class, 'store']);
 
+Route::get('/health', function() {
+    return response()->json(['Iam' => 'fine']);
+});
 // application json header
