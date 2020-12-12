@@ -20,6 +20,8 @@ class DeviceResource extends JsonResource
             'name' => $this->name,
             'variables' => $this->variables,
             'token' => $this->token,
+            'lat' => $this->lat,
+            'long' => $this->long,
             'latest_metrics' => new MetricCollection($this->latestMetrics)
         ];
     }

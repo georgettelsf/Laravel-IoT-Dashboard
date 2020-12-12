@@ -18,7 +18,9 @@ class Device extends Model
         'name',
         'token',
         'user_id',
-        'variables'
+        'variables',
+        'lat',
+        'long'
     ];
 
     protected $casts = [

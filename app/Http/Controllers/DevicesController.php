@@ -10,6 +10,7 @@ use App\Http\Resources\DeviceResourceSingle;
 use App\Models\Device;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 class DevicesController extends Controller
 {
@@ -21,33 +22,41 @@ class DevicesController extends Controller
 
         $validatedData = $request->validate([
             'name' => 'required|min:5',
-            'variables'=> 'required'
+            'variables'=> 'required',
+            'lat' => 'required',
+            'long' => 'required'
         ]);
         
         $device = Device::create([
             'name' => $validatedData['name'],
             'token' => Str::random(16),
             'user_id' => Auth::user()->id,
-            'variables' => $validatedData['variables']
+            'variables' => $validatedData['variables'],
+            'lat' => $validatedData['lat'],
+            'long' => $validatedData['long']
         ]);
 
         return new DeviceResource($device);       
     }
 
     public function update(Request $request, $id){
-        
         $device = Device::findOrFail($id);
-        if ($device->user_id !== Auth::user()->id) {
+
+        if ($device->user_id != Auth::user()->id) {
             abort(403);
         }
         $validatedData = $request->validate([
             'name' => 'required|min:5',
-            'variables'=> 'required'
+            'variables'=> 'required',
+            'lat' => 'required',
+            'long' => 'required'
         ]);
 
         $device->update([
             'name' => $validatedData['name'],
-            'variables' => $validatedData['variables']
+            'variables' => $validatedData['variables'],
+            'lat' => $validatedData['lat'],
+            'long' => $validatedData['long']
         ]);
 
         return new DeviceResource($device);
