@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DevicesController;
 use App\Http\Controllers\MetricsController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +26,9 @@ Route::middleware(['auth:sanctum'])->group(function() {
 
     Route::get('/metrics/{id}', [MetricsController::class, 'get']);
     Route::delete('/metrics/{id}', [MetricsController::class, 'delete']);
+
+    Route::get('/profile', [AuthController::class, 'getProfile']);
+    Route::patch('/profile', [AuthController::class, 'updateProfile']);
 });
 
 Route::post('/metrics/{token}', [MetricsController::class, 'store']);

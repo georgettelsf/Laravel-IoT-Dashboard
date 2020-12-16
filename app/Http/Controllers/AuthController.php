@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Validation\ValidationException;
+use App\Http\Resources\UserResource;
 
 class AuthController extends Controller
 {
@@ -26,7 +27,6 @@ class AuthController extends Controller
         }
 
         throw ValidationException::withMessages(['email' => 'Invalid credentials']);
-        // return response()->json(['email' => 'Invalid credentials'], 422);
     }
 
     public function register(Request $request){
@@ -49,19 +49,27 @@ class AuthController extends Controller
         return response()->json([], 204);
     }
 
-    public function update(Request $request, $id){
+    public function getProfile(Request $request) {
+        return new UserResource(Auth::user());
+    }
 
-        $user = Device::findOrFail($id);
+    public function updateProfile(Request $request){
 
-        $request->validate(
+        $user = Auth::user();
+        $validatedData = $request->validate(
             [
-                'name'     => 'equired|string',
+                'name'     => 'required|string',
                 'email'    => 'required|string',
-                'password' => 'required|string|confirmed'
+                'password' => 'string|confirmed',
+                'current' => 'string'
             ]
         );
 
-        $user = User::update([
+        if (!Auth::guard('web')->once(['email' => $user->email, 'password' => $validatedData['current']])) {
+            throw ValidationException::withMessages(['current' => 'Invalid password']);
+        }
+
+        $user = $user->update([
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
             'password' => Hash::make($validatedData['password']),
